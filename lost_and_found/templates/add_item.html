@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card shadow p-4 mx-auto" style="max-width: 600px;">
+  <h3>Report a Found Item</h3>
+  <hr>
+  {% if errors %}
+    <div class='alert alert-danger'>
+      <ul class="mb-0">
+        {% for field, error_list in errors.items %}
+          {% for error in error_list %}
+          <li> <strong> {{field | title}}:</strong> {{error}}</li>
+          {% endfor %}
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label class="form-label">What did you find?</label>
+      <input type="text" name="name" class="form-control" placeholder="e.g. Blue Umbrella" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Where did you find it?</label>
+      <input type="text" name="location" class="form-control" placeholder="e.g. Library 2F" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea name="description" class="form-control" rows="3" placeholder="Color, brand, or unique marks..."
+        ></textarea>
+    </div>
+    <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-primary">Post to Board</button>
+      <a href="{% url 'board' %}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
