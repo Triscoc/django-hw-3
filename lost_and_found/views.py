@@ -6,6 +6,26 @@ from .models import LostTable
 # from .serializers import LostItemSerializer
 from .forms import LostItemForm
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import LostItemSerializer
+
+# Rest API Endpoints
+
+@api_view(['GET'])
+def api_active_items(request):
+    items = LostTable.objects.filter(is_returned=False).order_by('-found_date')
+    serializer = LostItemSerializer(items, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def api_item_detail(request, item_id):
+    try:
+        item = LostTable.objects.get(id=item_id)
+        serializer = LostItemSerializer(item)
+        return Response(serializer.data)
+    except LostTable.DoesNotExist:
+        return Response({"error": "Item not found"}, status=404)
 
 def register_view(request):
     '''
