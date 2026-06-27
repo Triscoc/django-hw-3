@@ -1,3 +1,6 @@
 djangorestframework
 mysqlclient
 gunicorn
+django
+mysqlclient
+requests
